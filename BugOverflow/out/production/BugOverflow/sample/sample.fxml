@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+o
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+    <Label fx:id="labe11" alignment="CENTER" prefHeight="47.0" prefWidth="76.0" text="Hello" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font></Label>
+</VBox>
