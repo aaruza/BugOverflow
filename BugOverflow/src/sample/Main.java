@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+//testing
 public class Main extends Application {
 
     private final int WIDTH = 600;
