@@ -1,4 +1,4 @@
-package sample;
+package Project.Objects;
 
 import javafx.scene.paint.Color;
 
