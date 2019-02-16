@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 o
 <VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
-    <Label fx:id="labe11" alignment="CENTER" prefHeight="47.0" prefWidth="76.0" text="Hello" textAlignment="CENTER">
+    <Label fx:id="labe1" alignment="CENTER" prefHeight="47.0" prefWidth="76.0" text="Hello" textAlignment="CENTER">
       <font>
          <Font name="System Bold" size="18.0" />
       </font></Label>

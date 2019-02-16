@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -15,9 +16,30 @@ public class Main extends Application {
     private final int HEIGHT = 400;
 
     private int radius = 25;
-    private Color color = Color.RED;
+    private Color playerColor = Color.BLACK;
+    private Color bulletColor = Color.PURPLE;
 
-    private  ArrayList<Circle> circles;
+    private double dx = 200;
+    private double dy = 200;
+
+    private double mousedx;
+    private double mousedy;
+
+    private Group root;
+
+    private Circle player;
+    private ArrayList<Circle> bullets;
+    private ArrayList<Circle> dummies;
+
+    private double bulletSpeed = 900;
+
+    private double timeBetweenShots;
+    private double minTimeBetweenShots = 0.5;
+
+    private char directionX;
+    private char directionY;
+
+    private boolean shoot;
 
     private long startNanoTime;
 
@@ -29,58 +51,79 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle( "Canvas Example" );
 
-        Group root = new Group();
+        player = new sample.Circle(radius, 40, 50, 0, 0, playerColor);
 
-        circles = new ArrayList<>();
+        bullets = new ArrayList<>();
+        dummies = new ArrayList<>();
 
-        sample.Circle c1 = new sample.Circle(radius, 40, 50, 400, 100, color);
-        circles.add(c1);
+        directionX = 'x';
+        directionY = 'x';
+        timeBetweenShots = 0.0;
+        shoot = false;
 
-        sample.Circle c2 = new sample.Circle(radius, 80, 100, 100, -300, color);
-        circles.add(c2);
 
-        sample.Circle c3 = new sample.Circle(radius, 200, 300, -150, -200, color);
-        circles.add(c3);
+        /*
+         * Make dummy targets.
+         */
+        Circle dummy1 = new Circle(20, 300, 200, 0, 0, Color.RED);
+        Circle dummy2 = new Circle(20, 400, 100, 0, 0, Color.RED);
+        Circle dummy3 = new Circle(20, 100, 200, 0, 0, Color.RED);
+        dummies.add(dummy1);
+        dummies.add(dummy2);
+        dummies.add(dummy3);
 
-        sample.Circle c4 = new sample.Circle(radius, 300, 100, -100, -340, color);
-        circles.add(c4);
-
-        sample.Circle c5 = new sample.Circle(radius, 30, 200, 70, 150, color);
-        circles.add(c5);
-
-        sample.Circle c6 = new sample.Circle(radius, 60, 200, -130, 280, color);
-        circles.add(c6);
-
-        sample.Circle c7 = new sample.Circle(radius, 90, 30, -200, 200, color);
-        circles.add(c7);
-
-        sample.Circle c8 = new sample.Circle(radius, 30, 350, 260, -100, color);
-        circles.add(c8);
-
-        sample.Circle c9 = new sample.Circle(radius, 200, 200, -350, 150, color);
-        circles.add(c9);
-
-        sample.Circle c10 = new sample.Circle(radius, 150, 300, 190, 140, color);
-        circles.add(c10);
-
-        sample.Circle c11 = new sample.Circle(radius, 150, 200, 170, -200, color);
-        circles.add(c11);
-
-        sample.Circle c12 = new sample.Circle(radius, 100, 30, 250, -200, color);
-        circles.add(c12);
-
-        sample.Circle c13 = new sample.Circle(radius, 260, 30, 260, -230, color);
-        circles.add(c13);
-
-        sample.Circle c14 = new sample.Circle(radius, 70, 90, -190, 170, color);
-        circles.add(c14);
-
-        root.getChildren().addAll(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14);
+        root = new Group();
+        root.getChildren().addAll(player, dummy1, dummy2, dummy3);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        scene.setOnKeyPressed(e -> {
+
+            // move up down
+            switch (e.getCode()) {
+
+                // move
+                case UP:
+                    directionY = 'u';
+                    break;
+                case DOWN:
+                    directionY = 'd';
+                    break;
+            }
+
+            // move left right
+            switch (e.getCode()) {
+                case LEFT:
+                    directionX = 'l';
+                    break;
+                case RIGHT:
+                    directionX = 'r';
+                    break;
+            }
+
+        });
+
+        scene.setOnKeyReleased(e -> {
+
+            // move
+            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN)
+                directionY = 'x';
+            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
+                directionX = 'x';
+        });
+
+        scene.setOnMouseDragged(e -> {
+            mousedx = e.getX() - player.getCenterX();
+            mousedy = e.getY() - player.getCenterY();
+        });
+
+        scene.setOnMousePressed(e -> {
+            shoot = true;
+        });
+
+        scene.setOnMouseReleased(e -> shoot = false);
 
         startNanoTime = System.nanoTime();
 
@@ -93,15 +136,91 @@ public class Main extends Application {
                 double dt = (currentNanoTime - startNanoTime) / 1000000000.0;
                 startNanoTime = currentNanoTime;
 
-                // update
-                for (Circle c : circles) {
-                    c.update(dt);
+                if (timeBetweenShots < minTimeBetweenShots)
+                    timeBetweenShots += dt;
+
+                // move
+                switch (directionX) {
+
+                    case 'l':
+                        player.setCenterX(player.getCenterX() - dx * dt);
+                        break;
+                    case 'r':
+                        player.setCenterX(player.getCenterX() + dx * dt);
+                        break;
                 }
-                Collision.checkForCollisions(circles, WIDTH, HEIGHT);
+
+                switch (directionY) {
+
+                    case 'u':
+                        player.setCenterY(player.getCenterY() - dy * dt);
+                        break;
+                    case 'd':
+                        player.setCenterY(player.getCenterY() + dy * dt);
+                        break;
+                }
+
+                // shoot
+                if (shoot && timeBetweenShots >= minTimeBetweenShots) {
+                    timeBetweenShots = 0.0;
+                    shoot();
+                }
+
+                // update bullets
+                for (int i = 0; i < bullets.size(); i++) {
+
+                    Circle bullet = bullets.get(i);
+
+                    bullet.update(dt);
+
+                    // check bullet leaving screen
+                    if (bullet.getCenterX() < -bullet.getRadius() ||
+                        bullet.getCenterX() > WIDTH + bullet.getRadius() ||
+                        bullet.getCenterY() < -bullet.getRadius() ||
+                        bullet.getCenterY() > HEIGHT + bullet.getRadius()) {
+
+                        bullets.remove(bullet);
+                        root.getChildren().remove(bullet);
+                        i--;
+                        break;
+                    }
+
+                    // check collision with dummy
+                    for (int j = 0; j < dummies.size(); j++) {
+
+                        Circle dummy = dummies.get(j);
+
+                        if (bullet.intersects(dummy)) {
+
+                            bullets.remove(bullet);
+                            root.getChildren().remove(bullet);
+
+                            dummies.remove(dummy);
+                            root.getChildren().remove(dummy);
+                            i--;
+                            j--;
+                        }
+                    }
+
+                }
+
             }
         };
 
         animationTimer.start();
+    }
+
+    private void shoot() {
+
+        double d = Math.sqrt(Math.pow(mousedx, 2) + Math.pow(mousedy, 2));
+
+        double x = bulletSpeed * mousedx / d;
+        double y = bulletSpeed * mousedy / d;
+
+        Circle bullet = new Circle(5, player.getCenterX(), player.getCenterY(), x, y, bulletColor);
+        bullets.add(bullet);
+
+        root.getChildren().add(bullet);
     }
 
 }
