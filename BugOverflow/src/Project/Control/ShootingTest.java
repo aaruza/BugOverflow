@@ -1,5 +1,8 @@
-package sample;
+package Project.Control;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -7,10 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import Project.Objects.Circle;
 
 import java.util.ArrayList;
 
-public class Main extends Application {
+public class ShootingTest {
+
+    private Scene currentScene;
 
     private final int WIDTH = 600;
     private final int HEIGHT = 400;
@@ -43,15 +49,17 @@ public class Main extends Application {
 
     private long startNanoTime;
 
-    public static void main(String[] args) {
-        launch(args);
+    @FXML
+    AnchorPane mainAnchor;
+
+    public ShootingTest() {
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle( "Canvas Example" );
+    @FXML
+    public void initialize() {
+        currentScene = mainAnchor.getScene();
 
-        player = new sample.Circle(radius, 40, 50, 0, 0, playerColor);
+        player = new Circle(radius, 40, 50, 0, 0, playerColor);
 
         bullets = new ArrayList<>();
         dummies = new ArrayList<>();
@@ -72,58 +80,18 @@ public class Main extends Application {
         dummies.add(dummy2);
         dummies.add(dummy3);
 
-        root = new Group();
-        root.getChildren().addAll(player, dummy1, dummy2, dummy3);
+        mainAnchor.getChildren().addAll(player, dummy1, dummy2, dummy3);
 
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
-        scene.setOnKeyPressed(e -> {
 
-            // move up down
-            switch (e.getCode()) {
-
-                // move
-                case UP:
-                    directionY = 'u';
-                    break;
-                case DOWN:
-                    directionY = 'd';
-                    break;
-            }
-
-            // move left right
-            switch (e.getCode()) {
-                case LEFT:
-                    directionX = 'l';
-                    break;
-                case RIGHT:
-                    directionX = 'r';
-                    break;
-            }
-
-        });
-
-        scene.setOnKeyReleased(e -> {
-
-            // move
-            if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN)
-                directionY = 'x';
-            if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
-                directionX = 'x';
-        });
-
-        scene.setOnMouseDragged(e -> {
+        mainAnchor.setOnMouseDragged(e -> {
             mousedx = e.getX() - player.getCenterX();
             mousedy = e.getY() - player.getCenterY();
         });
 
-        scene.setOnMousePressed(e -> {
-            shoot = true;
-        });
+        mainAnchor.setOnMousePressed(e -> shoot = true);
 
-        scene.setOnMouseReleased(e -> shoot = false);
+        mainAnchor.setOnMouseReleased(e -> shoot = false);
 
         startNanoTime = System.nanoTime();
 
@@ -175,12 +143,12 @@ public class Main extends Application {
 
                     // check bullet leaving screen
                     if (bullet.getCenterX() < -bullet.getRadius() ||
-                        bullet.getCenterX() > WIDTH + bullet.getRadius() ||
-                        bullet.getCenterY() < -bullet.getRadius() ||
-                        bullet.getCenterY() > HEIGHT + bullet.getRadius()) {
+                            bullet.getCenterX() > WIDTH + bullet.getRadius() ||
+                            bullet.getCenterY() < -bullet.getRadius() ||
+                            bullet.getCenterY() > HEIGHT + bullet.getRadius()) {
 
                         bullets.remove(bullet);
-                        root.getChildren().remove(bullet);
+                        mainAnchor.getChildren().remove(bullet);
                         i--;
                         break;
                     }
@@ -193,10 +161,10 @@ public class Main extends Application {
                         if (bullet.intersects(dummy)) {
 
                             bullets.remove(bullet);
-                            root.getChildren().remove(bullet);
+                            mainAnchor.getChildren().remove(bullet);
 
                             dummies.remove(dummy);
-                            root.getChildren().remove(dummy);
+                            mainAnchor.getChildren().remove(dummy);
                             i--;
                             j--;
                         }
@@ -206,7 +174,43 @@ public class Main extends Application {
 
             }
         };
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainAnchor.getScene().setOnKeyPressed(e -> {
 
+                    // move up down
+                    switch (e.getCode()) {
+                        case UP:
+                            directionY = 'u';
+                            break;
+                        case DOWN:
+                            directionY = 'd';
+                            break;
+                    }
+
+                    // move left right
+                    switch (e.getCode()) {
+                        case LEFT:
+                            directionX = 'l';
+                            break;
+                        case RIGHT:
+                            directionX = 'r';
+                            break;
+                    }
+
+                });
+
+                mainAnchor.getScene().setOnKeyReleased(e -> {
+
+                    // move
+                    if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN)
+                        directionY = 'x';
+                    if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
+                        directionX = 'x';
+                });
+            }
+        });
         animationTimer.start();
     }
 
@@ -220,7 +224,7 @@ public class Main extends Application {
         Circle bullet = new Circle(5, player.getCenterX(), player.getCenterY(), x, y, bulletColor);
         bullets.add(bullet);
 
-        root.getChildren().add(bullet);
+        mainAnchor.getChildren().add(bullet);
     }
 
 }
