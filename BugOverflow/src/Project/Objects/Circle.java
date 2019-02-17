@@ -1,6 +1,8 @@
 package Project.Objects;
 
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Circle extends javafx.scene.shape.Circle {
 
@@ -14,8 +16,11 @@ public class Circle extends javafx.scene.shape.Circle {
         this.setCenterY(y);
         this.vx = vx;
         this.vy = vy;
-        this.setFill(color);
+        //this.setFill(color);
     }
+
+
+
 
     public void update(double dt) {
 
