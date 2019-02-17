@@ -1,9 +1,9 @@
 package Project.Entities;
 
-import javafx.scene.paint.Color;
 import Project.Objects.Circle;
+import javafx.scene.paint.Color;
 
-public class MeleeEnemy extends Circle{
+public class RangeEnemy extends Circle{
     //int x,y,v=150;
 
     public double radius;
@@ -12,11 +12,11 @@ public class MeleeEnemy extends Circle{
     public double vx;
     public double vy;
     public boolean alive = true;
-    public int rand=(int)Math.round((Math.random()*(-20-20)+20));
+    public int rand=(int)Math.round((Math.random()*(-50-50)+50));
     Color color;
 
     //should only put positive speeds
-    public MeleeEnemy(double radius, double x, double y, double vx, double vy, Color color) {
+    public RangeEnemy(double radius, double x, double y, double vx, double vy, Color color) {
         super( radius,  x,  y,  vx,  vy,  color);
         this.setCenterX(x);
         this.setCenterY(y);
@@ -25,7 +25,7 @@ public class MeleeEnemy extends Circle{
         this.vy = vy;
         this.setFill(color);
     }
-    public void update(int pX, int pY, int t){
+    public void update(double pX, double pY, double t){
         //entity is to the left of player
         if( x-pX<0){
             this.setCenterX(this.getCenterX() + vx * t);
@@ -41,6 +41,7 @@ public class MeleeEnemy extends Circle{
             this.setCenterX(this.getCenterX() + vx *-1* t);
         }
     }
+
     public boolean intersects(Circle otherCircle) {
 
         if (Math.sqrt(Math.pow(otherCircle.getCenterX() - this.getCenterX(), 2)
@@ -49,4 +50,5 @@ public class MeleeEnemy extends Circle{
         else
             return false;
     }
+
 }
