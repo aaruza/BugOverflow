@@ -79,6 +79,10 @@ public class GameLayout {
     private int numRange=3;
     private int numMelee=3;
 
+    private int health=10;
+    private long invul=Long.MAX_VALUE;
+
+    private boolean isTouching = false;
     private boolean shoot;
 
     private long startNanoTime;
@@ -135,21 +139,21 @@ public class GameLayout {
                  */
                 for(int i=0;i<numRange;i++)
                 {
-                    RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-300)+300)), playerSpeed/2, playerSpeed/2, enemyColor);
+                    RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-280)+280)), playerSpeed/2, playerSpeed/2, enemyColor);
                     ranges.add(range1);
                     wallLayout.getChildren().add(range1);
-                    rangedMoveX.add(0.0);
-                    rangedMoveY.add(0.0);
-                    rangedTimer.add(0);
+                  //  rangedMoveX.add(0.0);
+                   // rangedMoveY.add(0.0);
+                   // rangedTimer.add(0);
                 }
 
                 for(int i=0;i<numMelee;i++)
                 {
                     MeleeEnemy melee1 = new MeleeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-300)+300)), playerSpeed/2, playerSpeed/2, enemyColor);
                     melees.add(melee1);
-                    meleeMoveX.add(0.0);
-                    meleeMoveY.add(0.0);
-                    meleetimer.add(0);
+                   // meleeMoveX.add(0.0);
+                   // meleeMoveY.add(0.0);
+                  //  meleetimer.add(0);
                     wallLayout.getChildren().add(melee1);
                 }
 
@@ -222,6 +226,8 @@ public class GameLayout {
                         double dt = (currentNanoTime - startNanoTime) / 1000000000.0;
                         startNanoTime = currentNanoTime;
 
+                        invul+=dt;
+
                         if (timeBetweenShots < minTimeBetweenShots)
                             timeBetweenShots += dt;
                         if(timeBetweenEnemyShots<minTimeEnemyBullet)
@@ -235,8 +241,20 @@ public class GameLayout {
                         player.setCenterY(player.getCenterY() + temp*playerSpeed*directionY*dt);
 
                         //Range enemy move
-                        for(int i=0;i<ranges.size();i++)
+                      /*  for(int i=0;i<ranges.size();i++)
                         {
+                            //frame rate
+                            if(step%9==0){
+                                if(step%20<10) {
+                                    //ranges.get(i).setCenterX(ranges.get(i).getCenterX() + 30 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt);
+                                    ranges.get(i).setCenterY(ranges.get(i).getCenterY() + 2);
+                                }else{
+                                    ranges.get(i).setCenterY(ranges.get(i).getCenterY() - 2);
+                                }
+                            }
+
+
+
 //                            if(rangedTimer.get(i)  0) {
 //                                rangedTimer.set(i, (int) (Math.random() * 100 + 100));
 //                                rangedMoveX.set(i, (ranges.get(i).getCenterX() + player.getCenterX() * Math.random() * dt * 2.0 ));
@@ -274,34 +292,33 @@ public class GameLayout {
 //                                    rangedTimer.set(i, rangedTimer.get(i)-1);
 //
 //                                }
-                            if(step%10 == 0) {
-                                ranges.get(i).setCenterX(ranges.get(i).getCenterX() + 30 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt);
-                                ranges.get(i).setCenterY(ranges.get(i).getCenterY() + 30 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt);
-                            }
 
-                        }
-                       step++;
+                        }*/
 
                         //Melee move
                         for(int i=0;i<melees.size();i++)
                         {
-                            if(step%(numMelee-i)==0) {
-                                //entity is to the left of player
-                                if( melees.get(i).getCenterX()+melees.get(i).rand-player.getCenterX()<0){
-                                    melees.get(i).setCenterX(melees.get(i).getCenterX() +melees.get(i). vx * dt);
-                                    //entity is above player
-                                    if(melees.get(i).getCenterY()+melees.get(i).rand-player.getCenterY()<0) {
-                                        melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy * dt);
+                            if(!Collision.intersects(player, melees.get(i))){
+                                if(step%(numMelee-i)==0) {
+                                    //entity is to the left of player
+                                    if( melees.get(i).getCenterX()+melees.get(i).rand-player.getCenterX()<0){
+                                        melees.get(i).setCenterX(melees.get(i).getCenterX() +melees.get(i). vx * dt);
+                                        //entity is above player
+                                        if(melees.get(i).getCenterY()+melees.get(i).rand-player.getCenterY()<0) {
+                                            melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy * dt);
+                                        }else{
+                                            //entity below player
+                                            melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy *-1* dt);
+                                        }
                                     }else{
-                                        //entity below player
-                                        melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy *-1* dt);
+                                        //entity is to the right of player
+                                        melees.get(i).setCenterX(melees.get(i).getCenterX() + melees.get(i).vx *-1* dt);
                                     }
-                                }else{
-                                    //entity is to the right of player
-                                    melees.get(i).setCenterX(melees.get(i).getCenterX() + melees.get(i).vx *-1* dt);
                                 }
                             }
+
                         }
+                        step++;
 
                         // shoot
                         if (timeBetweenShots >= minTimeBetweenShots) {
@@ -356,7 +373,7 @@ public class GameLayout {
 
                                 MeleeEnemy dummy = melees.get(j);
 
-                                if (!bullet.isEnemy&&Collision.intersects(bullet, dummy)) {
+                                if (!bullet.isEnemy && Collision.intersects(bullet, dummy)) {
 
                                     bullets.remove(bullet);
                                     wallLayout.getChildren().remove(bullet);
@@ -365,6 +382,11 @@ public class GameLayout {
                                     wallLayout.getChildren().remove(dummy);
                                     i--;
                                     j--;
+                                } else if (Collision.intersects(player, dummy) && dummy.isTouching == false) {
+                                    System.out.println("Player health: " + --health);
+                                    dummy.isTouching = true;
+                                } else if(!Collision.intersects(player, dummy)) {
+                                    dummy.isTouching = false;
                                 }
                             }
 
@@ -402,8 +424,6 @@ public class GameLayout {
 
         wallLayout.getChildren().add(bullet);
     }
-
-
 }
 
 

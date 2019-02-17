@@ -12,6 +12,7 @@ public class MeleeEnemy extends Circle{
     public double vx;
     public double vy;
     public boolean alive = true;
+    public boolean isTouching=false;
     public int rand=(int)Math.round((Math.random()*(-20-20)+20));
     Color color;
 
