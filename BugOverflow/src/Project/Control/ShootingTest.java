@@ -4,20 +4,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import Project.Objects.Circle;
 
 import java.util.ArrayList;
 
 public class ShootingTest {
 
-    private Scene currentScene;
-
+    // max dimensions of scene
     private final int WIDTH = 600;
     private final int HEIGHT = 400;
 
@@ -25,25 +20,30 @@ public class ShootingTest {
     private Color playerColor = Color.BLACK;
     private Color bulletColor = Color.PURPLE;
 
+    private double playerSpeed = 200;
+    private double bulletSpeed = 900;
+
     private double dx = 200;
     private double dy = 200;
 
+    // position of mouse
+    private double mousex;
+    private double mousey;
+
+    // difference between position of mouse and position of player
     private double mousedx;
     private double mousedy;
-
-    private Group root;
 
     private Circle player;
     private ArrayList<Circle> bullets;
     private ArrayList<Circle> dummies;
 
-    private double bulletSpeed = 900;
-
     private double timeBetweenShots;
     private double minTimeBetweenShots = 0.2;
 
-    private char directionX;
-    private char directionY;
+    // player movement direction
+    private int directionX;
+    private int directionY;
 
     private boolean shoot;
 
@@ -57,15 +57,14 @@ public class ShootingTest {
 
     @FXML
     public void initialize() {
-        currentScene = mainAnchor.getScene();
 
         player = new Circle(radius, 40, 50, 0, 0, playerColor);
 
         bullets = new ArrayList<>();
         dummies = new ArrayList<>();
 
-        directionX = 'x';
-        directionY = 'x';
+        directionX = 0;
+        directionY = 0;
         timeBetweenShots = 0.0;
         shoot = false;
 
@@ -83,14 +82,21 @@ public class ShootingTest {
         mainAnchor.getChildren().addAll(player, dummy1, dummy2, dummy3);
 
         mainAnchor.setOnMouseDragged(e -> {
-            mousedx = e.getX() - player.getCenterX();
-            mousedy = e.getY() - player.getCenterY();
+            mousex = e.getX();
+            mousey = e.getY();
+
+            mousedx = mousex - player.getCenterX();
+            mousedy = mousey - player.getCenterY();
         });
 
         mainAnchor.setOnMousePressed(e -> {
             shoot = true;
-            mousedx = e.getX() - player.getCenterX();
-            mousedy = e.getY() - player.getCenterY();
+
+            mousex = e.getX();
+            mousey = e.getY();
+
+            mousedx = mousex - player.getCenterX();
+            mousedy = mousey - player.getCenterY();
         });
 
         mainAnchor.setOnMouseReleased(e -> shoot = false);
@@ -110,25 +116,11 @@ public class ShootingTest {
                     timeBetweenShots += dt;
 
                 // move
-                switch (directionX) {
-
-                    case 'l':
-                        player.setCenterX(player.getCenterX() - dx * dt);
-                        break;
-                    case 'r':
-                        player.setCenterX(player.getCenterX() + dx * dt);
-                        break;
-                }
-
-                switch (directionY) {
-
-                    case 'u':
-                        player.setCenterY(player.getCenterY() - dy * dt);
-                        break;
-                    case 'd':
-                        player.setCenterY(player.getCenterY() + dy * dt);
-                        break;
-                }
+                double temp = Math.sqrt(Math.pow(directionX, 2) + Math.pow(directionY, 2));
+                if (temp != 0)
+                    temp = 1/temp;
+                player.setCenterX(player.getCenterX() + temp*playerSpeed*directionX*dt);
+                player.setCenterY(player.getCenterY() + temp*playerSpeed*directionY*dt);
 
                 // shoot
                 if (shoot && timeBetweenShots >= minTimeBetweenShots) {
@@ -182,23 +174,26 @@ public class ShootingTest {
             public void run() {
                 mainAnchor.getScene().setOnKeyPressed(e -> {
 
+                    mousedx = mousex - player.getCenterX();
+                    mousedy = mousey - player.getCenterY();
+
                     // move up down
                     switch (e.getCode()) {
-                        case UP:
-                            directionY = 'u';
+                        case W:
+                            directionY = -1;
                             break;
-                        case DOWN:
-                            directionY = 'd';
+                        case S:
+                            directionY = 1;
                             break;
                     }
 
                     // move left right
                     switch (e.getCode()) {
-                        case LEFT:
-                            directionX = 'l';
+                        case A:
+                            directionX = -1;
                             break;
-                        case RIGHT:
-                            directionX = 'r';
+                        case D:
+                            directionX = 1;
                             break;
                     }
 
@@ -207,10 +202,10 @@ public class ShootingTest {
                 mainAnchor.getScene().setOnKeyReleased(e -> {
 
                     // move
-                    if (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN)
-                        directionY = 'x';
-                    if (e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.RIGHT)
-                        directionX = 'x';
+                    if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S)
+                        directionY = 0;
+                    if (e.getCode() == KeyCode.A || e.getCode() == KeyCode.D)
+                        directionX = 0;
                 });
             }
         });
