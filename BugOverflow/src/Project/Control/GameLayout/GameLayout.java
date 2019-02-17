@@ -1,11 +1,13 @@
 package Project.Control.GameLayout;
 
 import Project.Objects.Circle;
+import Project.Objects.Rectangle;
 import Project.Utilities.Collision;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -23,11 +25,14 @@ public class GameLayout {
     AnchorPane wallLayout;
     FXMLLoader loader;
 
-    // max dimensions of scene
-    private final int WIDTH = 600;
-    private final int HEIGHT = 400;
+    @FXML
+    Label hpLabel;
 
-    private int radius = 25;
+//    AnchorPane aLeft1, aLeft2, aRight1, aRight2, aTop1, aTop2, aBottom1, aBottom2;
+//    javafx.scene.shape.Rectangle left1, left2, right1, right2, top1, top2, bottom1, bottom2;
+
+    GridPane playPane;
+
     private Color playerColor = Color.BLACK;
     private Color bulletColor = Color.PURPLE;
 
@@ -45,9 +50,16 @@ public class GameLayout {
     private double mousedx;
     private double mousedy;
 
-    private Circle player;
+    private Rectangle player;
     private ArrayList<Circle> bullets;
     private ArrayList<Circle> dummies;
+
+    private Rectangle topWall;
+    private Rectangle leftWall;
+    private Rectangle bottomWall;
+    private Rectangle rightWall;
+
+    private double wallWidth = 40;
 
     private double timeBetweenShots;
     private double minTimeBetweenShots = 0.2;
@@ -67,7 +79,6 @@ public class GameLayout {
     @FXML
     public void initialize(){
 
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -83,7 +94,8 @@ public class GameLayout {
                 mainLayoutGrid.add(wallLayout, 0, 1);
 
                 Image image = new Image("Images/Octocat.png");
-                player = new Circle(radius, 40, 50, 0, 0, playerColor);
+                player = new Rectangle(50, 50, wallLayout.getScene().getWidth()/2,
+                        wallLayout.getScene().getHeight()/2, 0, 0, playerColor);
 
                 bullets = new ArrayList<>();
                 dummies = new ArrayList<>();
@@ -100,6 +112,18 @@ public class GameLayout {
 
 
                 /*
+                 * Make walls.
+                 */
+                topWall = new Rectangle(wallLayout.getScene().getWidth(), wallWidth, 0,
+                        0, 0, 0, Color.BLACK);
+                bottomWall = new Rectangle(wallLayout.getScene().getWidth(), wallWidth, 0,
+                        wallLayout.getScene().getHeight() - wallWidth, 0, 0, Color.BLACK);
+                leftWall = new Rectangle(wallWidth, wallLayout.getScene().getHeight() - 2*wallWidth, 0,
+                        wallWidth, 0, 0, Color.BLACK);
+                rightWall = new Rectangle(wallWidth, wallLayout.getScene().getHeight() - 2*wallWidth,
+                        wallLayout.getScene().getWidth() - wallWidth, wallWidth, 0, 0, Color.BLACK);
+
+                /*
                  * Make dummy targets.
                  */
                 Circle dummy1 = new Circle(20, 300, 200, 0, 0, Color.RED);
@@ -109,14 +133,14 @@ public class GameLayout {
                 dummies.add(dummy2);
                 dummies.add(dummy3);
 
-                wallLayout.getChildren().addAll(player, dummy1, dummy2, dummy3);
+                wallLayout.getChildren().addAll(player, dummy1, dummy2, dummy3, leftWall, topWall, bottomWall, rightWall);
 
                 wallLayout.setOnMouseDragged(e -> {
                     mousex = e.getX();
                     mousey = e.getY();
 
-                    mousedx = mousex - player.getCenterX();
-                    mousedy = mousey - player.getCenterY();
+                    mousedx = mousex - player.getX();
+                    mousedy = mousey - player.getY();
                 });
 
                 wallLayout.setOnMousePressed(e -> {
@@ -125,16 +149,16 @@ public class GameLayout {
                     mousex = e.getX();
                     mousey = e.getY();
 
-                    mousedx = mousex - player.getCenterX();
-                    mousedy = mousey - player.getCenterY();
+                    mousedx = mousex - player.getX();
+                    mousedy = mousey - player.getY();
                 });
 
                 wallLayout.setOnMouseReleased(e -> shoot = false);
 
                 mainLayoutGrid.getScene().setOnKeyPressed(e -> {
 
-                    mousedx = mousex - player.getCenterX();
-                    mousedy = mousey - player.getCenterY();
+                    mousedx = mousex - player.getX();
+                    mousedy = mousey - player.getY();
 
                     // move up down
                     switch (e.getCode()) {
@@ -185,8 +209,11 @@ public class GameLayout {
                         double temp = Math.sqrt(Math.pow(directionX, 2) + Math.pow(directionY, 2));
                         if (temp != 0)
                             temp = 1/temp;
-                        player.setCenterX(player.getCenterX() + temp*playerSpeed*directionX*dt);
-                        player.setCenterY(player.getCenterY() + temp*playerSpeed*directionY*dt);
+                        player.setX(player.getX() + temp*playerSpeed*directionX*dt);
+                        player.setY(player.getY() + temp*playerSpeed*directionY*dt);
+
+                        // check collision with walls
+                        Collision.collisionWithWalls(leftWall, rightWall, topWall, bottomWall, player);
 
                         // shoot
                         if (shoot && timeBetweenShots >= minTimeBetweenShots) {
@@ -201,34 +228,40 @@ public class GameLayout {
 
                             bullet.update(dt);
 
+                            boolean checkDummyCollision = true;
+
                             // check bullet leaving screen
-                            if (bullet.getCenterX() < -bullet.getRadius() ||
-                                    bullet.getCenterX() > wallLayout.getWidth() + bullet.getRadius() ||
-                                    bullet.getCenterY() < -bullet.getRadius() ||
-                                    bullet.getCenterY() > wallLayout.getHeight() + bullet.getRadius()) {
+                            if (bullet.getCenterX() < wallWidth + bullet.getRadius() ||
+                                    bullet.getCenterX() > wallLayout.getScene().getWidth() - wallWidth - bullet.getRadius() ||
+                                    bullet.getCenterY() < wallWidth + bullet.getRadius() ||
+                                    bullet.getCenterY() > wallLayout.getScene().getHeight() - wallWidth - bullet.getRadius()) {
 
                                 bullets.remove(bullet);
                                 wallLayout.getChildren().remove(bullet);
                                 i--;
-                                break;
+                                checkDummyCollision = false;
                             }
 
-                            // check collision with dummy
-                            for (int j = 0; j < dummies.size(); j++) {
+                            if (checkDummyCollision) {
 
-                                Circle dummy = dummies.get(j);
+                                // check collision with dummy
+                                for (int j = 0; j < dummies.size(); j++) {
 
-                                if (Collision.intersects(bullet, dummy)) {
+                                    Circle dummy = dummies.get(j);
 
-                                    bullets.remove(bullet);
-                                    wallLayout.getChildren().remove(bullet);
+                                    if (Collision.intersects(bullet, dummy)) {
 
-                                    dummies.remove(dummy);
-                                    wallLayout.getChildren().remove(dummy);
-                                    i--;
-                                    j--;
+                                        bullets.remove(bullet);
+                                        wallLayout.getChildren().remove(bullet);
+
+                                        dummies.remove(dummy);
+                                        wallLayout.getChildren().remove(dummy);
+                                        i--;
+                                        j--;
+                                    }
                                 }
                             }
+
 
                         }
 
@@ -247,7 +280,7 @@ public class GameLayout {
         double x = bulletSpeed * mousedx / d;
         double y = bulletSpeed * mousedy / d;
 
-        Circle bullet = new Circle(5, player.getCenterX(), player.getCenterY(), x, y, bulletColor);
+        Circle bullet = new Circle(5, player.getX(), player.getY(), x, y, bulletColor);
         bullets.add(bullet);
 
         wallLayout.getChildren().add(bullet);

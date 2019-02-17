@@ -3,23 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/ShootingTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/ShootingTest$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/ShootingTest$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/ShootingTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/FXML/ShootingTest.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$1$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Control/GameLayout/GameLayout.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/FXML/GameLayout/GameLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/FXML/GameLayout/GameLayout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/FXML/GameLayout/WallLayoutPerm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/FXML/GameLayout/WallLayoutPerm.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Objects/Circle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Objects/Circle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Objects/Rectangle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Objects/Rectangle.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/BugOverflow/Project/Utilities/Collision.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BugOverflow/Project/Utilities/Collision.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Project/Control/ShootingTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Project/FXML/GameLayout/WallLayoutPerm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/FXML/GameLayout/WallLayoutPerm.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Project/FXML/ShootingTest.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Project/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Project/Objects/Circle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/Objects/Circle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Project/Objects/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/Objects/Rectangle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Project/Utilities/Collision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Project/Utilities/Collision.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
@@ -78,28 +73,34 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BugOverflow.iml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Project/Objects/Circle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
+            <state relative-caret-position="20">
               <caret line="46" selection-start-line="46" selection-end-line="46" />
+              <folding>
+                <element signature="e#1500#1501#0" expanded="true" />
+                <element signature="e#1525#1526#0" expanded="true" />
+                <element signature="e#1554#1555#0" expanded="true" />
+                <element signature="e#1579#1580#0" expanded="true" />
+                <element signature="e#1615#1616#0" expanded="true" />
+                <element signature="e#1643#1644#0" expanded="true" />
+                <element signature="e#1679#1680#0" expanded="true" />
+                <element signature="e#1707#1708#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Project/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/Project/Utilities/Collision.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="38" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-429">
-              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="340">
+              <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,10 +109,41 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="54" column="18" lean-forward="true" selection-start-line="54" selection-start-column="18" selection-end-line="54" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Project/Control/StartScreenControl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Project/FXML/Test.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="3" column="30" lean-forward="true" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+            <state relative-caret-position="340">
+              <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
             </state>
           </provider>
           <provider editor-type-id="JavaFX-Scene-Builder" />
@@ -120,26 +152,40 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Project/FXML/GameLayout/WallLayoutPerm.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="159" selection-start-line="9" selection-start-column="159" selection-end-line="9" selection-end-column="159" />
+            <state relative-caret-position="384">
+              <caret line="40" column="13" lean-forward="true" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
             </state>
           </provider>
           <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Project/FXML/StartScreen.fxml">
-          <provider selected="true" editor-type-id="text-editor" />
-          <provider editor-type-id="JavaFX-Scene-Builder" />
+        <entry file="file://$PROJECT_DIR$/src/Project/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+              <folding>
+                <element signature="e#559#560#0" expanded="true" />
+                <element signature="e#587#588#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Project/Utilities/Collision.java">
+        <entry file="file://$PROJECT_DIR$/src/Project/Objects/Rectangle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1224">
-              <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
+            <state relative-caret-position="160">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#2570#2571#0" expanded="true" />
+                <element signature="e#2595#2596#0" expanded="true" />
+                <element signature="e#2624#2625#0" expanded="true" />
+                <element signature="e#2649#2650#0" expanded="true" />
+                <element signature="e#2685#2686#0" expanded="true" />
+                <element signature="e#2713#2714#0" expanded="true" />
+                <element signature="e#2749#2750#0" expanded="true" />
+                <element signature="e#2777#2778#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -186,12 +232,12 @@
         <option value="$PROJECT_DIR$/src/Project/Control/GameLayout/WallLayoutPerm.java" />
         <option value="$PROJECT_DIR$/src/Project/Objects/Rectangle.java" />
         <option value="$PROJECT_DIR$/src/Project/Objects/Circle.java" />
-        <option value="$PROJECT_DIR$/src/Project/Utilities/Collision.java" />
         <option value="$PROJECT_DIR$/src/Project/Control/WallLayoutPerm.java" />
         <option value="$PROJECT_DIR$/src/Project/FXML/GameLayout/WallLayoutPerm.fxml" />
-        <option value="$PROJECT_DIR$/src/Project/Main.java" />
         <option value="$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml" />
         <option value="$PROJECT_DIR$/src/Project/Control/ShootingTest.java" />
+        <option value="$PROJECT_DIR$/src/Project/Utilities/Collision.java" />
+        <option value="$PROJECT_DIR$/src/Project/Main.java" />
         <option value="$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java" />
       </list>
     </option>
@@ -220,7 +266,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -300,6 +345,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -311,7 +357,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550404585076" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550419293364" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PATH_TO_FX$" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -435,9 +481,10 @@
     <option name="totallyTimeSpent" value="1302000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.19395973" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.19062027" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -488,8 +535,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/Control/StartScreenControl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="280">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -521,29 +568,43 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/FXML/Test.fxml">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        </state>
+      </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/Objects/Rectangle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="160">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#2570#2571#0" expanded="true" />
+            <element signature="e#2595#2596#0" expanded="true" />
+            <element signature="e#2624#2625#0" expanded="true" />
+            <element signature="e#2649#2650#0" expanded="true" />
+            <element signature="e#2685#2686#0" expanded="true" />
+            <element signature="e#2713#2714#0" expanded="true" />
+            <element signature="e#2749#2750#0" expanded="true" />
+            <element signature="e#2777#2778#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/Objects/Circle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
+        <state relative-caret-position="20">
           <caret line="46" selection-start-line="46" selection-end-line="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/Utilities/Collision.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1224">
-          <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#1500#1501#0" expanded="true" />
+            <element signature="e#1525#1526#0" expanded="true" />
+            <element signature="e#1554#1555#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
+            <element signature="e#1615#1616#0" expanded="true" />
+            <element signature="e#1643#1644#0" expanded="true" />
+            <element signature="e#1679#1680#0" expanded="true" />
+            <element signature="e#1707#1708#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -552,10 +613,32 @@
       <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/Control/WallLayoutPerm.java">
+    <entry file="file://$PROJECT_DIR$/src/Project/Control/WallLayoutPerm.java" />
+    <entry file="file://$PROJECT_DIR$/src/Project/FXML/ShootingTest.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/Project/Control/ShootingTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="340">
+          <caret line="26" column="28" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Project/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+          <folding>
+            <element signature="e#559#560#0" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Project/Utilities/Collision.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -564,51 +647,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/FXML/GameLayout/WallLayoutPerm.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="159" selection-start-line="9" selection-start-column="159" selection-end-line="9" selection-end-column="159" />
+        <state relative-caret-position="384">
+          <caret line="40" column="13" lean-forward="true" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
         </state>
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/FXML/ShootingTest.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/Control/ShootingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="83" column="2" selection-start-line="83" selection-start-column="2" selection-end-line="83" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="38" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Project/Control/GameLayout/GameLayout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-429">
-          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="140">
+          <caret line="54" column="18" lean-forward="true" selection-start-line="54" selection-start-column="18" selection-end-line="54" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Project/FXML/GameLayout/GameLayout.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" column="30" lean-forward="true" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
   </component>
   <component name="masterDetails">

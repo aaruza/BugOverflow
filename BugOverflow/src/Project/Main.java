@@ -11,8 +11,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("FXML/GameLayout/GameLayout.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setTitle("Octocat Odyssey");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

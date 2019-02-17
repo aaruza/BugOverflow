@@ -3,91 +3,38 @@ package Project.Utilities;
 import Project.Objects.Circle;
 import Project.Objects.Rectangle;
 
-import java.util.ArrayList;
-
 
 public class Collision {
-/*
-    public static void checkForCollisions(ArrayList<Circle> circles, int width, int height) {
 
-        for (int i = 0; i < circles.size(); i++) {
+    /**
+     * Checks and resolves player collision with walls.
+     *
+     * @param left     wall on left
+     * @param right    wall on right
+     * @param top      wall on top
+     * @param bottom   wall on bottom
+     * @param player
+     */
+    public static void collisionWithWalls(Rectangle left,Rectangle right, Rectangle top, Rectangle bottom,
+                                          Rectangle player) {
 
-            // check collision with other circles
-            for (int j = i + 1; j < circles.size(); j++) {
+        // check collision with left walls
+        if (intersects(player, left))
+            player.setX(left.getX() + left.getWidth());
 
-                // collision
-                if (circles.get(i).intersects(circles.get(j))) {
+        // check collision with right walls
+        else if (intersects(player, right))
+            player.setX(right.getX() - player.getWidth());
 
-                    // update
-                    update(circles.get(i), circles.get(j));
-                }
+        // check collision with top walls
+        if (intersects(player, top))
+            player.setY(top.getY() + top.getHeight());
 
-            }
-
-            // check collision with walls
-
-            double x = circles.get(i).getCenterX();
-            double y = circles.get(i).getCenterY();
-            double r = circles.get(i).getRadius();
-            Circle c = circles.get(i);
-
-            if (x + r >= width) {
-                c.setCenterX(width - r);
-                c.setVx(-c.getVx());
-            }
-
-            else if (x - r <= 0) {
-                c.setCenterX(r);
-                c.setVx(-c.getVx());
-            }
-
-            if (y + r >= height) {
-                c.setCenterY(height - r);
-                c.setVy(-c.getVy());
-            }
-
-            else if (y - r <= 0) {
-                c.setCenterY(r);
-                c.setVy(-c.getVy());
-            }
-        }
-
+        // check collision with bottom walls
+        else if (intersects(player, bottom))
+            player.setY(bottom.getY() - player.getHeight());
     }
 
-    private static void update(Circle c1, Circle c2) {
-
-        // update positions
-
-        double dx = c1.getCenterX() - c2.getCenterX();
-        double dy = c1.getCenterY() - c2.getCenterY();
-
-        double l = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-        double d = (c1.getRadius() + c2.getRadius() - l) / 2;
-
-        double x = d * dx / l;
-        double y = d * dy / l;
-
-        c1.setCenterX(c1.getCenterX() + x);
-        c1.setCenterY(c1.getCenterY() + y);
-
-        c2.setCenterX(c2.getCenterX() - x);
-        c2.setCenterY(c2.getCenterY() - y);
-
-
-        // update velocities
-
-        double c1x = c1.getVx();
-        double c1y = c1.getVy();
-        double c2x = c2.getVx();
-        double c2y = c2.getVy();
-
-        c1.setVx(c2x);
-        c1.setVy(c2y);
-
-        c2.setVx(c1x);
-        c2.setVy(c1y);
-    }
-*/
     /**
      * Checks whether or not this rectangle intersects with another rectangle.
      *
@@ -99,13 +46,13 @@ public class Collision {
     public static boolean intersects(Rectangle rectangle, Rectangle otherRectangle) {
 
         // check horizontal direction
-        if (rectangle.getX() + rectangle.getWidth()/2 <= otherRectangle.getX() - otherRectangle.getWidth()/2 ||
-                rectangle.getX() - rectangle.getWidth()/2 >= otherRectangle.getX() + otherRectangle.getWidth()/2)
+        if (rectangle.getX() + rectangle.getWidth() <= otherRectangle.getX() ||
+                rectangle.getX() >= otherRectangle.getX()  + otherRectangle.getWidth())
             return false;
 
         // check vertical direction
-        if (rectangle.getY() + rectangle.getHeight()/2 <= otherRectangle.getY() - otherRectangle.getHeight()/2 ||
-                rectangle.getY() - rectangle.getHeight()/2 >= otherRectangle.getY() + otherRectangle.getHeight()/2)
+        if (rectangle.getY() >= otherRectangle.getY() + otherRectangle.getHeight() ||
+                rectangle.getY() + rectangle.getHeight() <= otherRectangle.getY())
             return false;
 
         return true;
@@ -121,21 +68,21 @@ public class Collision {
     public static boolean intersects(Rectangle rectangle, Circle circle) {
 
         // check horizontal direction
-        if (rectangle.getX() + rectangle.getWidth()/2 <= circle.getCenterX() - circle.getRadius() ||
-                rectangle.getX() - rectangle.getWidth()/2 >= circle.getCenterX() + circle.getRadius())
+        if (rectangle.getX() + rectangle.getWidth() <= circle.getCenterX() - circle.getRadius() ||
+                rectangle.getX() >= circle.getCenterX() + circle.getRadius())
             return false;
 
         // check vertical direction
-        if (rectangle.getY() + rectangle.getHeight()/2 <= circle.getCenterY() - circle.getRadius() ||
-                rectangle.getY() - rectangle.getHeight()/2 >= circle.getCenterY() + circle.getRadius())
+        if (rectangle.getY() >= circle.getCenterY() + circle.getRadius() ||
+                rectangle.getY() + rectangle.getHeight() <= circle.getCenterY() - circle.getRadius())
             return false;
 
 
         // check corners:
 
         // clamp closest point to the rectangle's extents
-        double x = clamp(circle.getCenterX(), rectangle.getX() - rectangle.getWidth()/2, rectangle.getX() + rectangle.getWidth()/2);
-        double y = clamp(circle.getCenterY(), rectangle.getY() - rectangle.getHeight()/2, rectangle.getY() + rectangle.getHeight()/2);
+        double x = clamp(circle.getCenterX(), rectangle.getX(), rectangle.getX() + rectangle.getWidth());
+        double y = clamp(circle.getCenterX(), rectangle.getY(), rectangle.getY() + rectangle.getHeight());
 
 
         // get minimum distance between circle and rectangle (uses Pythag)
