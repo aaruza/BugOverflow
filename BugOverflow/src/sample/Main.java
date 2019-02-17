@@ -1,30 +1,38 @@
 package sample;
 import java.util.LinkedList;
 import java.util.Queue;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.shape.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
-//testing
+
 public class Main  {
 
-    private static int numRoom,index=0;
+    /**
+     * numRoom is the total number of rooms to generate
+     * index is a variable to keep track of the current room number being created
+     * allRooms is an arraylist containing all rooms generated
+     * Queue is used in the breadth first search to generate the map
+     * all other variables are not used and were being developed for minimap
+     */
+    private static int numRoom,index=-1;
     private static ArrayList<Room> allRooms=new ArrayList<Room>();
     private static Queue<Room> queue=new LinkedList<Room>();
     private static Group root = new Group();
     private static final int WIDTH=10,HEIGHT=10;
 
     public static void main(String[] args) {
+        //state number of rooms you want to generate
         numRoom=10;
+
+        //first initialize a room to use as the seed for bfs
         Room seed = randRoom(-1);
+
+        //add the first room to the arraylist
         allRooms.add(seed);
+        //add the first room to the queue
         queue.add(seed);
+        //generate rooms
         roomGen();
     }
 
@@ -36,21 +44,29 @@ public class Main  {
         {
             Room r=queue.poll();
             if(r.doors!=0){
-                //direction
+                //check all four directions of room (north, south, east, west)
                 for (int i = 0; i < 4; i++) {
-                    //check if direction is already taken
-                    if (r.opening[i] == 0) {
+                    //check if direction has already generated room
+                    if (r.opening[i] == -1) {
+                        //if no rooms are needed,make this a end room, and break out of for loop
                         if(numRoom==0){
                             for(int j=0;j<4;j++)
-                              r.opening[j] = -1;
+                              r.opening[j] = -2;
                             r.doors= 0;
+                            break;
                         }else {
+                            //add root room to array
                             oppositeD=oppositeDirection(i);
                             Room room = randRoom(oppositeD);
                             room.opening[oppositeD]=r.index;
+
+                            //console printing for debugging
                             System.out.print(" Room root: " + r.index + " Direction from root: " + i);
+
+                            //add newly generated room to arraylist, queue
                             allRooms.add(room);
                             queue.add(room);
+
                             //set this direction to the newly generated room
                             r.opening[i] = room.index;
                         }
@@ -59,6 +75,8 @@ public class Main  {
             }
         }
     }
+
+    //switch room direction
     public static int oppositeDirection(int d)
     {
         switch(d)
@@ -75,10 +93,15 @@ public class Main  {
         return -1;
     }
 
+    //generate random variable room
     public static Room randRoom(int taken){
+        //increment index, minus numRoom
         index++;
         numRoom--;
+
+        //debug console printing
         System.out.println("\nRoom number: "+index);
+
         //num of doors from 1-3
         int door=(int)Math.round((Math.random()*(3-1)+1));
 
@@ -86,11 +109,16 @@ public class Main  {
         while(door>numRoom){
             door=(int)Math.round((Math.random()*(numRoom)));
         }
+
+        //debug
         System.out.print(" Room doors: "+door);
-        //which room each door points to
+
+        //instantiate array that stores what room each door points to
         int[] openings= new int[4];
+
+        //initiate to -2
         for(int i=0;i<4;i++)
-            openings[i]=-1;
+            openings[i]=-2;
         int direction;
 
         //decide which direction each door points to
@@ -100,12 +128,12 @@ public class Main  {
             //0 is north, 1 is east, 2 is south, 3 is west
             direction=(int)Math.round((Math.random()*(3)));
 
-            while( openings[direction]==0||taken==direction){
+            while( openings[direction]==-1||taken==direction){
                 direction=(int)Math.round((Math.random()*(3)));
             }
 
-            //0 means there's a room in this direction
-            openings[direction]=0;
+            //-1 means there's a room in this direction
+            openings[direction]=-1;
 
 
         }
@@ -114,7 +142,7 @@ public class Main  {
         return r;
     }
 
-    //
+    //unfinished minimap method that is not used anywhere else
     public void setRec(int prev, int direction){
         Rectangle r = new Rectangle();
         switch(direction){
@@ -128,6 +156,7 @@ public class Main  {
 
     }
 
+    //cindy's old circle methods
 
   /* public void start(Stage primaryStage) {
         primaryStage.setTitle( "Canvas Example" );
