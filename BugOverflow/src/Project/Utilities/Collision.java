@@ -13,26 +13,53 @@ public class Collision {
      * @param right    wall on right
      * @param top      wall on top
      * @param bottom   wall on bottom
-     * @param player
+     * @param entity
      */
     public static void collisionWithWalls(Rectangle left,Rectangle right, Rectangle top, Rectangle bottom,
-                                          Rectangle player) {
+                                          Object entity) {
 
-        // check collision with left walls
-        if (intersects(player, left))
-            player.setX(left.getX() + left.getWidth());
+        if (entity instanceof Rectangle) {
 
-        // check collision with right walls
-        else if (intersects(player, right))
-            player.setX(right.getX() - player.getWidth());
+            Rectangle player = (Rectangle) entity;
 
-        // check collision with top walls
-        if (intersects(player, top))
-            player.setY(top.getY() + top.getHeight());
+            // check collision with left walls
+            if (intersects(player, left))
+                player.setX(left.getX() + left.getWidth());
 
-        // check collision with bottom walls
-        else if (intersects(player, bottom))
-            player.setY(bottom.getY() - player.getHeight());
+            // check collision with right walls
+            else if (intersects(player, right))
+                player.setX(right.getX() - player.getWidth());
+
+            // check collision with top walls
+            if (intersects(player, top))
+                player.setY(top.getY() + top.getHeight());
+
+            // check collision with bottom walls
+            else if (intersects(player, bottom))
+                player.setY(bottom.getY() - player.getHeight());
+        }
+
+        else if (entity instanceof Circle) {
+
+            Circle dummy = (Circle) entity;
+
+            // check collision with left walls
+            if (intersects(dummy, left))
+                dummy.setCenterX(left.getX() + left.getWidth() + dummy.getRadius());
+
+                // check collision with right walls
+            else if (intersects(dummy, right))
+                dummy.setCenterX(right.getX() - dummy.getRadius());
+
+            // check collision with top walls
+            if (intersects(dummy, top))
+                dummy.setCenterY(top.getY() + top.getHeight() + dummy.getRadius());
+
+                // check collision with bottom walls
+            else if (intersects(dummy, bottom))
+                dummy.setCenterY(bottom.getY() - dummy.getRadius());
+        }
+
     }
 
     /**
