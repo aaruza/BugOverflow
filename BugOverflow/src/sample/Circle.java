@@ -15,6 +15,7 @@ public class Circle extends javafx.scene.shape.Circle {
         this.vx = vx;
         this.vy = vy;
         this.setFill(color);
+
     }
 
     public void update(double dt) {
