@@ -44,31 +44,6 @@ public class Circle extends javafx.scene.shape.Circle {
         this.setCenterY(this.getCenterY() + vy * dt);
     }
 
-    /**
-     * Checks whether or not this circle intersects with another circle.
-     *
-     * @param otherCircle
-     * @return true if intersects, false otherwise
-     */
-    public boolean intersects(Circle otherCircle) {
-
-        if (Math.sqrt(Math.pow(otherCircle.getCenterX() - this.getCenterX(), 2)
-                + Math.pow(otherCircle.getCenterY() - this.getCenterY(), 2)) < otherCircle.getRadius() + this.getRadius())
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * Checks if this circle intersects another rectangle.
-     *
-     * @param rectangle
-     * @return true if intersects, false otherwise
-     */
-    public boolean intersects(Rectangle rectangle) {
-
-        return rectangle.intersects(this);
-    }
 
     /**
      * Returns the x-component of the circle's velocity.
