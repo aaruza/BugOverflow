@@ -40,7 +40,7 @@ public class ShootingTest {
     private double bulletSpeed = 900;
 
     private double timeBetweenShots;
-    private double minTimeBetweenShots = 0.5;
+    private double minTimeBetweenShots = 0.2;
 
     private char directionX;
     private char directionY;
@@ -82,14 +82,16 @@ public class ShootingTest {
 
         mainAnchor.getChildren().addAll(player, dummy1, dummy2, dummy3);
 
-
-
         mainAnchor.setOnMouseDragged(e -> {
             mousedx = e.getX() - player.getCenterX();
             mousedy = e.getY() - player.getCenterY();
         });
 
-        mainAnchor.setOnMousePressed(e -> shoot = true);
+        mainAnchor.setOnMousePressed(e -> {
+            shoot = true;
+            mousedx = e.getX() - player.getCenterX();
+            mousedy = e.getY() - player.getCenterY();
+        });
 
         mainAnchor.setOnMouseReleased(e -> shoot = false);
 
@@ -174,6 +176,7 @@ public class ShootingTest {
 
             }
         };
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
