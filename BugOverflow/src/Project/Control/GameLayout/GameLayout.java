@@ -1,13 +1,14 @@
 package Project.Control.GameLayout;
 
+import Project.Entities.Bullet;
+import Project.Entities.MeleeEnemy;
+import Project.Entities.RangeEnemy;
 import Project.Objects.Circle;
-import Project.Objects.Rectangle;
 import Project.Utilities.Collision;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -25,19 +26,21 @@ public class GameLayout {
     AnchorPane wallLayout;
     FXMLLoader loader;
 
-    @FXML
-    Label hpLabel;
+    // max dimensions of scene
+    private final int WIDTH = 600;
+    private final int HEIGHT = 400;
 
-//    AnchorPane aLeft1, aLeft2, aRight1, aRight2, aTop1, aTop2, aBottom1, aBottom2;
-//    javafx.scene.shape.Rectangle left1, left2, right1, right2, top1, top2, bottom1, bottom2;
-
-    GridPane playPane;
-
+    private int radius = 25;
     private Color playerColor = Color.BLACK;
+    private Color enemyColor = Color.RED;
+
+
     private Color bulletColor = Color.PURPLE;
+    private Color enemyBulletColor = Color.AQUA;
 
     private double playerSpeed = 200;
     private double bulletSpeed = 900;
+    private double enemyBulletSpeed=200;
 
     private double dx = 200;
     private double dy = 200;
@@ -50,23 +53,31 @@ public class GameLayout {
     private double mousedx;
     private double mousedy;
 
-    private Rectangle player;
-    private ArrayList<Circle> bullets;
-    private ArrayList<Circle> dummies;
-
-    private Rectangle topWall;
-    private Rectangle leftWall;
-    private Rectangle bottomWall;
-    private Rectangle rightWall;
-
-    private double wallWidth = 40;
+    private int step=0;
+    private Circle player;
+    private ArrayList<Bullet> bullets;
+   // private ArrayList<Bullet> enemyBullets;
+    private ArrayList<RangeEnemy> ranges;
+    private ArrayList<MeleeEnemy> melees;
+    private ArrayList<Double> rangedMoveX;
+    private ArrayList<Double> meleeMoveX;
+    private ArrayList<Double> rangedMoveY;
+    private ArrayList<Double> meleeMoveY;
+    private ArrayList<Integer> rangedTimer;
+    private ArrayList<Integer> meleetimer;
 
     private double timeBetweenShots;
     private double minTimeBetweenShots = 0.2;
 
+    private double timeBetweenEnemyShots;
+    private double minTimeEnemyBullet=1;
+
     // player movement direction
     private int directionX;
     private int directionY;
+
+    private int numRange=3;
+    private int numMelee=3;
 
     private boolean shoot;
 
@@ -94,11 +105,18 @@ public class GameLayout {
                 mainLayoutGrid.add(wallLayout, 0, 1);
 
                 Image image = new Image("Images/Octocat.png");
-                player = new Rectangle(50, 50, wallLayout.getScene().getWidth()/2,
-                        wallLayout.getScene().getHeight()/2, 0, 0, playerColor);
+                player = new Circle(radius, 40, 50, 0, 0, playerColor);
 
                 bullets = new ArrayList<>();
-                dummies = new ArrayList<>();
+              //  enemyBullets = new ArrayList<>();
+                ranges = new ArrayList<>();
+                melees = new ArrayList<>();
+                meleetimer = new ArrayList<>();
+                meleeMoveX = new ArrayList<>();
+                meleeMoveY = new ArrayList<>();
+                rangedTimer = new ArrayList<>();
+                rangedMoveX = new ArrayList<>();
+                rangedMoveY = new ArrayList<>();
 
                 ImagePattern imagePattern = new ImagePattern(image);
                 player.setFill(imagePattern);
@@ -108,39 +126,41 @@ public class GameLayout {
                 directionX = 0;
                 directionY = 0;
                 timeBetweenShots = 0.0;
+                timeBetweenEnemyShots=0.0;
                 shoot = false;
 
 
                 /*
-                 * Make walls.
-                 */
-                topWall = new Rectangle(wallLayout.getScene().getWidth(), wallWidth, 0,
-                        0, 0, 0, Color.BLACK);
-                bottomWall = new Rectangle(wallLayout.getScene().getWidth(), wallWidth, 0,
-                        wallLayout.getScene().getHeight() - wallWidth, 0, 0, Color.BLACK);
-                leftWall = new Rectangle(wallWidth, wallLayout.getScene().getHeight() - 2*wallWidth, 0,
-                        wallWidth, 0, 0, Color.BLACK);
-                rightWall = new Rectangle(wallWidth, wallLayout.getScene().getHeight() - 2*wallWidth,
-                        wallLayout.getScene().getWidth() - wallWidth, wallWidth, 0, 0, Color.BLACK);
-
-                /*
                  * Make dummy targets.
                  */
-                Circle dummy1 = new Circle(20, 300, 200, 0, 0, Color.RED);
-                Circle dummy2 = new Circle(20, 400, 100, 0, 0, Color.RED);
-                Circle dummy3 = new Circle(20, 100, 200, 0, 0, Color.RED);
-                dummies.add(dummy1);
-                dummies.add(dummy2);
-                dummies.add(dummy3);
+                for(int i=0;i<numRange;i++)
+                {
+                    RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-300)+300)), playerSpeed/2, playerSpeed/2, enemyColor);
+                    ranges.add(range1);
+                    wallLayout.getChildren().add(range1);
+                    rangedMoveX.add(0.0);
+                    rangedMoveY.add(0.0);
+                    rangedTimer.add(0);
+                }
 
-                wallLayout.getChildren().addAll(player, dummy1, dummy2, dummy3, leftWall, topWall, bottomWall, rightWall);
+                for(int i=0;i<numMelee;i++)
+                {
+                    MeleeEnemy melee1 = new MeleeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-300)+300)), playerSpeed/2, playerSpeed/2, enemyColor);
+                    melees.add(melee1);
+                    meleeMoveX.add(0.0);
+                    meleeMoveY.add(0.0);
+                    meleetimer.add(0);
+                    wallLayout.getChildren().add(melee1);
+                }
+
+                wallLayout.getChildren().addAll(player);
 
                 wallLayout.setOnMouseDragged(e -> {
                     mousex = e.getX();
                     mousey = e.getY();
 
-                    mousedx = mousex - player.getX();
-                    mousedy = mousey - player.getY();
+                    mousedx = mousex - player.getCenterX();
+                    mousedy = mousey - player.getCenterY();
                 });
 
                 wallLayout.setOnMousePressed(e -> {
@@ -149,16 +169,16 @@ public class GameLayout {
                     mousex = e.getX();
                     mousey = e.getY();
 
-                    mousedx = mousex - player.getX();
-                    mousedy = mousey - player.getY();
+                    mousedx = mousex - player.getCenterX();
+                    mousedy = mousey - player.getCenterY();
                 });
 
                 wallLayout.setOnMouseReleased(e -> shoot = false);
 
                 mainLayoutGrid.getScene().setOnKeyPressed(e -> {
 
-                    mousedx = mousex - player.getX();
-                    mousedy = mousey - player.getY();
+                    mousedx = mousex - player.getCenterX();
+                    mousedy = mousey - player.getCenterY();
 
                     // move up down
                     switch (e.getCode()) {
@@ -204,67 +224,151 @@ public class GameLayout {
 
                         if (timeBetweenShots < minTimeBetweenShots)
                             timeBetweenShots += dt;
+                        if(timeBetweenEnemyShots<minTimeEnemyBullet)
+                                timeBetweenEnemyShots += dt;
 
                         // move
                         double temp = Math.sqrt(Math.pow(directionX, 2) + Math.pow(directionY, 2));
                         if (temp != 0)
                             temp = 1/temp;
-                        player.setX(player.getX() + temp*playerSpeed*directionX*dt);
-                        player.setY(player.getY() + temp*playerSpeed*directionY*dt);
+                        player.setCenterX(player.getCenterX() + temp*playerSpeed*directionX*dt);
+                        player.setCenterY(player.getCenterY() + temp*playerSpeed*directionY*dt);
 
-                        // check collision with walls
-                        Collision.collisionWithWalls(leftWall, rightWall, topWall, bottomWall, player);
+                        //Range enemy move
+                        for(int i=0;i<ranges.size();i++)
+                        {
+//                            if(rangedTimer.get(i)  0) {
+//                                rangedTimer.set(i, (int) (Math.random() * 100 + 100));
+//                                rangedMoveX.set(i, (ranges.get(i).getCenterX() + player.getCenterX() * Math.random() * dt * 2.0 ));
+//                                rangedMoveY.set(i, (ranges.get(i).getCenterY() + (600 * Math.random() - 300.0)) * dt);
+//                            }
+//                            else {
+//                                System.out.println(rangedTimer);
+//                                rangedTimer.set(i, rangedTimer.get(i)-1);
+//                            }
+//
+//                            ranges.get(i).setCenterX(rangedMoveX.get(i));
+//                            ranges.get(i).setCenterY(rangedMoveY.get(i));
+
+                            //entity is to the left of player
+//                            if( ranges.get(i).getCenterX()+ransges.get(i).rand-player.getCenterX()<0){
+//                                ranges.get(i).setCenterX(ranges.get(i).getCenterX() + ranges.get(i).vx * dt);
+//                                //entity is above player
+//                                if(ranges.get(i).getCenterY()+ranges.get(i).rand-player.getCenterY()<0) {
+//                                    ranges.get(i).setCenterY(ranges.get(i).getCenterY() + ranges.get(i).vy * dt);
+//                                }else{
+//                                    //entity below player
+//                                    ranges.get(i).setCenterY(ranges.get(i).getCenterY() + ranges.get(i).vy *-1* dt);
+//                                }
+//                            }else{
+//                                //entity is to the right of player
+//                                ranges.get(i).setCenterX(ranges.get(i).getCenterX() + ranges.get(i).vx *-1* dt);
+//                            }
+//                                if(rangedTimer.get(i) == 0) {
+//                                    rangedTimer.set(i, (int) (Math.random() * 100 + 100));
+//                                    rangedMoveX.set(i, (ranges.get(i).getCenterX() + 10 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt*100));
+//                                    rangedMoveY.set(i, (ranges.get(i).getCenterY() + 100 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt*100));
+//                                }
+//                                else {
+//                                    System.out.println(rangedTimer);
+//                                    rangedTimer.set(i, rangedTimer.get(i)-1);
+//
+//                                }
+                            if(step%10 == 0) {
+                                ranges.get(i).setCenterX(ranges.get(i).getCenterX() + 30 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt);
+                                ranges.get(i).setCenterY(ranges.get(i).getCenterY() + 30 * Math.pow(-1, Math.round((Math.random() * (2 - 1) + 1))) * dt);
+                            }
+
+                        }
+                       step++;
+
+                        //Melee move
+                        for(int i=0;i<melees.size();i++)
+                        {
+                            if(step%(numMelee-i)==0) {
+                                //entity is to the left of player
+                                if( melees.get(i).getCenterX()+melees.get(i).rand-player.getCenterX()<0){
+                                    melees.get(i).setCenterX(melees.get(i).getCenterX() +melees.get(i). vx * dt);
+                                    //entity is above player
+                                    if(melees.get(i).getCenterY()+melees.get(i).rand-player.getCenterY()<0) {
+                                        melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy * dt);
+                                    }else{
+                                        //entity below player
+                                        melees.get(i).setCenterY(melees.get(i).getCenterY() +melees.get(i). vy *-1* dt);
+                                    }
+                                }else{
+                                    //entity is to the right of player
+                                    melees.get(i).setCenterX(melees.get(i).getCenterX() + melees.get(i).vx *-1* dt);
+                                }
+                            }
+                        }
 
                         // shoot
-                        if (shoot && timeBetweenShots >= minTimeBetweenShots) {
+                        if (timeBetweenShots >= minTimeBetweenShots) {
                             timeBetweenShots = 0.0;
-                            shoot();
+                            if (shoot)
+                                shoot();
+                        }
+                        if(timeBetweenEnemyShots>=minTimeEnemyBullet){
+                            timeBetweenEnemyShots = 0.0;
+                            for(int i=0;i<ranges.size();i++)
+                            {
+                                enemyShoot(ranges.get(i));
+                            }
                         }
 
                         // update bullets
                         for (int i = 0; i < bullets.size(); i++) {
 
-                            Circle bullet = bullets.get(i);
+                            Bullet bullet = bullets.get(i);
 
                             bullet.update(dt);
 
-                            boolean checkDummyCollision = true;
-
                             // check bullet leaving screen
-                            if (bullet.getCenterX() < wallWidth + bullet.getRadius() ||
-                                    bullet.getCenterX() > wallLayout.getScene().getWidth() - wallWidth - bullet.getRadius() ||
-                                    bullet.getCenterY() < wallWidth + bullet.getRadius() ||
-                                    bullet.getCenterY() > wallLayout.getScene().getHeight() - wallWidth - bullet.getRadius()) {
+                            if (bullet.getCenterX() < -bullet.getRadius() ||
+                                    bullet.getCenterX() > wallLayout.getWidth() + bullet.getRadius() ||
+                                    bullet.getCenterY() < -bullet.getRadius() ||
+                                    bullet.getCenterY() > wallLayout.getHeight() + bullet.getRadius()) {
 
                                 bullets.remove(bullet);
                                 wallLayout.getChildren().remove(bullet);
                                 i--;
-                                checkDummyCollision = false;
+                                break;
                             }
 
-                            if (checkDummyCollision) {
+                            // check collision with dummy
+                            for (int j = 0; j < ranges.size(); j++) {
 
-                                // check collision with dummy
-                                for (int j = 0; j < dummies.size(); j++) {
+                                RangeEnemy dummy = ranges.get(j);
 
-                                    Circle dummy = dummies.get(j);
+                                if (!bullet.isEnemy&&Collision.intersects(bullet, dummy)) {
 
-                                    if (Collision.intersects(bullet, dummy)) {
+                                    bullets.remove(bullet);
+                                    wallLayout.getChildren().remove(bullet);
 
-                                        bullets.remove(bullet);
-                                        wallLayout.getChildren().remove(bullet);
+                                    ranges.remove(dummy);
+                                    wallLayout.getChildren().remove(dummy);
+                                    i--;
+                                    j--;
+                                }
+                            }
+                            for (int j = 0; j < melees.size(); j++) {
 
-                                        dummies.remove(dummy);
-                                        wallLayout.getChildren().remove(dummy);
-                                        i--;
-                                        j--;
-                                    }
+                                MeleeEnemy dummy = melees.get(j);
+
+                                if (!bullet.isEnemy&&Collision.intersects(bullet, dummy)) {
+
+                                    bullets.remove(bullet);
+                                    wallLayout.getChildren().remove(bullet);
+
+                                    melees.remove(dummy);
+                                    wallLayout.getChildren().remove(dummy);
+                                    i--;
+                                    j--;
                                 }
                             }
 
-
                         }
-
                     }
                 };
                 animationTimer.start();
@@ -275,16 +379,30 @@ public class GameLayout {
     }
     private void shoot() {
 
-        double d = Math.sqrt(Math.pow(mousedx, 2) + Math.pow(mousedy, 2));
+    double d = Math.sqrt(Math.pow(mousedx, 2) + Math.pow(mousedy, 2));
 
-        double x = bulletSpeed * mousedx / d;
-        double y = bulletSpeed * mousedy / d;
+    double x = bulletSpeed * mousedx / d;
+    double y = bulletSpeed * mousedy / d;
 
-        Circle bullet = new Circle(5, player.getX(), player.getY(), x, y, bulletColor);
+    Bullet bullet = new Bullet(5, player.getCenterX(), player.getCenterY(), x, y, bulletColor);
+    bullets.add(bullet);
+
+    wallLayout.getChildren().add(bullet);
+}
+    private void enemyShoot(RangeEnemy enemy) {
+
+        double d = Math.sqrt(Math.pow(enemy.getCenterX()-player.getCenterX(), 2) + Math.pow(enemy.getCenterY()-player.getCenterY(), 2));
+
+        double vx = enemyBulletSpeed * (enemy.getCenterX()-player.getCenterX()) / -d;
+        double vy = enemyBulletSpeed *( enemy.getCenterY()-player.getCenterY() )/ -d;
+
+        Bullet bullet = new Bullet(5, enemy.getCenterX(), enemy.getCenterY(),vx, vy, enemyBulletColor);
+        bullet.isEnemy=true;
         bullets.add(bullet);
 
         wallLayout.getChildren().add(bullet);
     }
+
 
 }
 
