@@ -2,6 +2,8 @@ package Project.Control;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -11,7 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import Project.Objects.Circle;
-
+import javafx.scene.paint.ImagePattern;
 import java.util.ArrayList;
 
 public class ShootingTest {
@@ -58,11 +60,17 @@ public class ShootingTest {
     @FXML
     public void initialize() {
         currentScene = mainAnchor.getScene();
-
+        Image image = new Image("Images/Octocat.png");
         player = new Circle(radius, 40, 50, 0, 0, playerColor);
 
         bullets = new ArrayList<>();
         dummies = new ArrayList<>();
+
+
+        ImagePattern imagePattern = new ImagePattern(image);
+        player.setFill(imagePattern);
+
+        ImageView imageView = new ImageView(image);
 
         directionX = 'x';
         directionY = 'x';
