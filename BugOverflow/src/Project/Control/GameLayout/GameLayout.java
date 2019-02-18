@@ -147,7 +147,6 @@ public class GameLayout {
 
                 player.setFill(imagePattern);
 
-                //ImageView imageView = new ImageView(image);
 
                 directionX = 0;
                 directionY = 0;
@@ -387,7 +386,7 @@ public class GameLayout {
 
                                 if(hp == 0) {
                                     try {
-                                        Parent root = new FXMLLoader().load(getClass().getResource("../../FXML/Deathscreen.fxml"));
+                                        Parent root = FXMLLoader.load(getClass().getResource("../../FXML/Deathscreen.fxml"));
                                         Scene scene = new Scene(root, mainAnchor.getWidth(), mainAnchor.getHeight());
 
                                         Stage stage = (Stage)mainAnchor.getScene().getWindow();
