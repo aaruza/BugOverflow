@@ -8,12 +8,17 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -41,8 +46,23 @@ public class GameLayout {
     private double bulletSpeed = 900;
     private double enemyBulletSpeed=200;
 
+    private int numMonst=3;
+    private int numLevels =0;
+
     private double dx = 200;
     private double dy = 200;
+
+    @FXML
+    private AnchorPane mainAnchor;
+
+    @FXML
+    private Label hpLabel;
+
+    @FXML
+    private Label monstersLabel;
+
+    @FXML
+    private Label levelsCleared;
 
     // position of mouse
     private double mousex;
@@ -68,6 +88,8 @@ public class GameLayout {
 
     private double wallWidth = 40;
 
+    private int hp;
+
 
     private double timeBetweenShots;
     private double minTimeBetweenShots = 0.2;
@@ -80,11 +102,12 @@ public class GameLayout {
     private int directionY;
 
     private int numRange=3;
-    private int numMelee=3;
 
     private boolean shoot;
 
     private long startNanoTime;
+    Image image = new Image("Images/OctocatFixed.png");
+    ImagePattern imagePattern = new ImagePattern(image);
 
     public GameLayout() {
 
@@ -105,9 +128,12 @@ public class GameLayout {
                     e.printStackTrace();
                 }
 
+                hp = 10;
+                monstersLabel.setText("Monsters left: " + numRange);
+                levelsCleared.setText("Levels cleared: " + numLevels);
                 mainLayoutGrid.add(wallLayout, 0, 1);
 
-                Image image = new Image("Images/OctocatFixed.png");
+
                 player = new Rectangle(50, 50, wallLayout.getScene().getWidth()/2,
                         wallLayout.getScene().getHeight()/2, 0, 0, playerColor);
 
@@ -118,7 +144,7 @@ public class GameLayout {
                 rangedMoveX = new ArrayList<>();
                 rangedMoveY = new ArrayList<>();
 
-                ImagePattern imagePattern = new ImagePattern(image);
+
                 player.setFill(imagePattern);
 
                 //ImageView imageView = new ImageView(image);
@@ -146,7 +172,7 @@ public class GameLayout {
                  */
                 for(int i=0;i<numRange;i++)
                 {
-                    RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(550-30)+30)), (int)Math.round((Math.random()*(30-300)+300)), playerSpeed/2, playerSpeed/2, enemyColor);
+                    RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(wallLayout.getScene().getWidth()-wallWidth-100)+wallWidth)), (int)Math.round((Math.random()*(wallLayout.getScene().getHeight()-wallWidth-100)+wallWidth)), playerSpeed/2, playerSpeed/2, enemyColor);
                     ranges.add(range1);
                     wallLayout.getChildren().add(range1);
                     rangedMoveX.add(0.0);
@@ -341,10 +367,45 @@ public class GameLayout {
                                     wallLayout.getChildren().remove(dummy);
                                     i--;
                                     j--;
+
+                                    numRange--;
+                                    monstersLabel.setText("Monsters left: " + numRange);
+
+                                    if (numRange==0)
+                                        System.out.println("YOU'VE WON");
                                 }
                             }
 
+                            // check collision with player
+                            if (bullet.isEnemy && Collision.intersects(bullet, player)) {
+
+                                bullets.remove(bullet);
+                                wallLayout.getChildren().remove(bullet);
+                                i--;
+
+                                hp--;
+
+                                if(hp == 0) {
+                                    try {
+                                        Parent root = new FXMLLoader().load(getClass().getResource("../../FXML/Deathscreen.fxml"));
+                                        Scene scene = new Scene(root, mainAnchor.getWidth(), mainAnchor.getHeight());
+
+                                        Stage stage = (Stage)mainAnchor.getScene().getWindow();
+
+                                        stage.setScene(scene);
+                                        stage.show();
+                                    }
+                                    catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                                hpLabel.setText("HP: " + hp + "/10");
+                            }
+
                         }
+                        if(numRange==0)
+                            respawn(numMonst+=2);
                     }
                 };
                 animationTimer.start();
@@ -378,6 +439,32 @@ public class GameLayout {
 
         wallLayout.getChildren().add(bullet);
     }
+
+    private void respawn( int num){
+        /*
+         * Make dummy targets.
+         */
+        numRange=num;
+        for(int i=0;i<numRange;i++)
+        {
+            RangeEnemy range1 = new RangeEnemy(20, (int)Math.round((Math.random()*(wallLayout.getScene().getWidth()-wallWidth-100)+wallWidth)), (int)Math.round((Math.random()*(wallLayout.getScene().getHeight()-wallWidth-100)+wallWidth)), playerSpeed/2, playerSpeed/2, enemyColor);
+            ranges.add(range1);
+            wallLayout.getChildren().add(range1);
+            rangedMoveX.add(0.0);
+            rangedMoveY.add(0.0);
+            rangedTimer.add(0);
+
+            image = new Image("Images/MergeConflicts.png");
+            imagePattern = new ImagePattern(image);
+            range1.setFill(imagePattern);
+
+
+        }
+
+        numLevels++;
+        levelsCleared.setText("Levels cleared: " + numLevels);
+    }
+
 
 
 }
