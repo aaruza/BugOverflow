@@ -109,7 +109,7 @@ public class Collision {
 
         // clamp closest point to the rectangle's extents
         double x = clamp(circle.getCenterX(), rectangle.getX(), rectangle.getX() + rectangle.getWidth());
-        double y = clamp(circle.getCenterX(), rectangle.getY(), rectangle.getY() + rectangle.getHeight());
+        double y = clamp(circle.getCenterY(), rectangle.getY(), rectangle.getY() + rectangle.getHeight());
 
 
         // get minimum distance between circle and rectangle (uses Pythag)
